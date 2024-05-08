@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.TbNovelMapper">
+    
+    <resultMap type="TbNovel" id="TbNovelResult">
+        <result property="novelId"    column="novel_id"    />
+        <result property="typeId"    column="type_id"    />
+        <result property="novelName"    column="novel_name"    />
+        <result property="userId"    column="user_id"    />
+        <result property="novelIntro"    column="novel_intro"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectTbNovelVo">
+        select novel_id, type_id, novel_name, user_id, novel_intro, create_time, update_time from tb_novel
+    </sql>
+
+    <select id="selectTbNovelList" parameterType="TbNovel" resultMap="TbNovelResult">
+        <include refid="selectTbNovelVo"/>
+        <where>  
+            <if test="typeId != null "> and type_id = #{typeId}</if>
+            <if test="novelName != null  and novelName != ''"> and novel_name like concat('%', #{novelName}, '%')</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="novelIntro != null  and novelIntro != ''"> and novel_intro = #{novelIntro}</if>
+        </where>
+    </select>
+    
+    <select id="selectTbNovelByNovelId" parameterType="Long" resultMap="TbNovelResult">
+        <include refid="selectTbNovelVo"/>
+        where novel_id = #{novelId}
+    </select>
+        
+    <insert id="insertTbNovel" parameterType="TbNovel">
+        insert into tb_novel
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="novelId != null">novel_id,</if>
+            <if test="typeId != null">type_id,</if>
+            <if test="novelName != null">novel_name,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="novelIntro != null">novel_intro,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="novelId != null">#{novelId},</if>
+            <if test="typeId != null">#{typeId},</if>
+            <if test="novelName != null">#{novelName},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="novelIntro != null">#{novelIntro},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTbNovel" parameterType="TbNovel">
+        update tb_novel
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="typeId != null">type_id = #{typeId},</if>
+            <if test="novelName != null">novel_name = #{novelName},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="novelIntro != null">novel_intro = #{novelIntro},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where novel_id = #{novelId}
+    </update>
+
+    <delete id="deleteTbNovelByNovelId" parameterType="Long">
+        delete from tb_novel where novel_id = #{novelId}
+    </delete>
+
+    <delete id="deleteTbNovelByNovelIds" parameterType="String">
+        delete from tb_novel where novel_id in 
+        <foreach item="novelId" collection="array" open="(" separator="," close=")">
+            #{novelId}
+        </foreach>
+    </delete>
+</mapper>

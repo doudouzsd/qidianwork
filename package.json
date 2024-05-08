@@ -1,0 +1,11 @@
+{
+  "dependencies": {
+    "element-ui": "^2.15.14",
+    "vue-router": "^3.5.3"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^5.0.8",
+    "@vue/cli-plugin-eslint": "^5.0.8",
+    "@vue/cli-service": "^5.0.8"
+  }
+}
